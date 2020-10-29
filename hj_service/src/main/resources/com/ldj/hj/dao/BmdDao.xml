@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.BmdDao">
+    <resultMap id="resultMap" type="Bmd">
+        <id property="bmdId" column="bmdid" javaType="Integer"/>
+        <result property="bmdAccount" column="bmdaccount" javaType="String"/>
+        <result property="bmdPwd" column="bmdpwd" javaType="String"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="idCard" column="idcard" javaType="String"/>
+        <result property="address" column="address" javaType="String"/>
+        <result property="phone" column="phone" javaType="String"/>
+        <result property="bmdContact" column="bmdcontact" javaType="String"/>
+        <result property="bmdPhone" column="bmdphone" javaType="String"/>
+        <result property="bmdAddress" column="bmdaddress" javaType="String"/>
+        <result property="bmdMessage" column="bmdmessage" javaType="String"/>
+        <result property="adminId" column="adminid" javaType="Integer"/>
+        <result property="team" column="team" javaType="String"/>
+        <result property="perNumber" column="pernumber" javaType="Integer"/>
+        <result property="perOrder" column="perorder" javaType="Integer"/>
+        <result property="money" column="money" javaType="String"/>
+        <result property="status" column="status" javaType="String"/>
+        <association property="admin" column="adminid" javaType="Admin" select="com.ldj.hj.dao.AdminDao.selectByAdminId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Bmd" useGeneratedKeys="true">
+        insert into bmd(bmdaccount,bmdpwd,name,idcard,address,phone,bmdcontact,bmdphone,bmdaddress,bmdmessage,adminid,team)
+        values(#{bmdAccount},#{bmdPwd},#{name},#{idCard},#{address},#{phone},#{bmdContact},#{bmdPhone},#{bmdAddress},#{bmdMessage},#{adminId},#{team})
+    </insert>
+
+    <delete id="delete" parameterType="Integer" >
+        delete from bmd where bmdid=#{bmdId}
+    </delete>
+
+    <update id="update" parameterType="Bmd">
+        update bmd set bmdaccount=#{bmdAccount},bmdpwd=#{bmdPwd},name=#{name},idcard=#{idCard},address=#{address},phone=#{phone},
+        bmdcontact=#{bmdContact},bmdphone=#{bmdPhone},bmdaddress=#{bmdAddress},bmdmessage=#{bmdMessage},adminid=#{adminId},team=#{team},
+        pernumber=#{perNumber},perorder=#{perOrder},money=#{money},status=#{status}
+        where bmdid=#{bmdId}
+    </update>
+
+    <select id="selectByBmdId" parameterType="Integer" resultMap="resultMap">
+        select * from bmd where bmdid=#{bmdId}
+    </select>
+
+    <select id="selectBmdAll" parameterType="Integer" resultMap="resultMap">
+        select * from bmd where adminid = #{adminId}
+    </select>
+</mapper>

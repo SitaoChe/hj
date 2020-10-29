@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.RaceDao">
+    <resultMap id="resultMap" type="Race">
+        <id property="raceId" column="raceid" javaType="Integer"/>
+        <result property="raceName" column="racename" javaType="String"/>
+        <result property="startAge" column="startage" javaType="String"/>
+        <result property="endAge" column="endage" javaType="String"/>
+        <result property="startTime" column="starttime" javaType="String"/>
+        <result property="endTime" column="endtime" javaType="String"/>
+        <result property="startRace" column="startrace" javaType="String"/>
+        <result property="money" column="money" javaType="String"/>
+        <result property="lockStatus" column="lockstatus" javaType="String"/>
+        <result property="adminId" column="adminid" javaType="Integer"/>
+        <association property="admin" column="adminid" javaType="Admin" select="com.ldj.hj.dao.AdminDao.selectByAdminId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Race" useGeneratedKeys="true">
+        insert into race(racename,startage,endage,starttime,endtime,startrace,money,lockstatus,adminid)
+        values(#{raceName},#{startAge},#{endAge},#{startTime},#{endTime},#{startRace},#{money},#{lockStatus},#{adminId})
+    </insert>
+
+    <delete id="delete" parameterType="Integer" >
+        delete from race where raceid=#{raceId}
+    </delete>
+
+    <update id="update" parameterType="Race">
+        update race set racename=#{raceName},startage=#{startAge},endage=#{endAge},starttime=#{startTime},endtime=#{endTime},startrace=#{startRace},money=#{money},lockstatus=#{lockStatus},adminid=#{adminId} where raceid=#{raceId}
+    </update>
+
+    <update id="updateLock">
+        update race set lockstatus="锁定" where raceid=#{raceId}
+    </update>
+
+    <update id="updateUnlock">
+        update race set lockstatus="未锁定" where raceid=#{raceId}
+    </update>
+
+    <select id="selectByRaceId" parameterType="Integer" resultMap="resultMap">
+        select * from race where raceid=#{raceId}
+    </select>
+
+<!--    <select id="selectRaceByRaceProject" parameterType="Race" resultMap="resultMap">-->
+<!--        select * from race where =#{raceProject}-->
+<!--    </select>-->
+
+    <select id="selectRaceByAdminId" parameterType="Integer" resultMap="resultMap">
+        select * from race where adminid=#{adminId}
+    </select>
+
+    <select id="selectRaceByAdminIdNoLock" parameterType="Integer" resultMap="resultMap">
+        select * from race where adminid=#{adminId} and lockstatus="未锁定"
+    </select>
+
+    <select id="selectRaceAll" resultMap="resultMap">
+        select * from race
+    </select>
+
+</mapper>

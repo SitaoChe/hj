@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.SuperDao">
+    <resultMap id="resultMap" type="Super">
+        <id property="superId" column="superid" javaType="Integer"/>
+        <result property="superAccount" column="superaccount" javaType="String"/>
+        <result property="superPwd" column="superpwd" javaType="String"/>
+    </resultMap>
+
+    <select id="selectBySuperId" parameterType="Integer" resultMap="resultMap">
+        select * from super where superid = #{superId}
+    </select>
+
+    <update id="update" parameterType="Super">
+        update super set superaccount=#{superAccount},superpwd=#{superPwd} where superid=#{superId}
+    </update>
+
+</mapper>

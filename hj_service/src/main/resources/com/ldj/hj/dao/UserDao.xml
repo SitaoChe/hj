@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.UserDao">
+    <resultMap id="resultMap" type="User">
+        <id property="userId" column="userid" javaType="Integer"/>
+        <result property="userAccount" column="useraccount" javaType="String"/>
+        <result property="userPwd" column="userpwd" javaType="String"/>
+        <result property="boyName" column="boyname" javaType="String"/>
+        <result property="girlName" column="girlname" javaType="String"/>
+        <result property="userIdCard" column="useridcard" javaType="String"/>
+        <result property="raceProject" column="raceproject" javaType="String"/>
+        <result property="phone" column="phone" javaType="String"/>
+        <result property="region" column="region" javaType="String"/>
+        <result property="checkStatus" column="checkstatus" javaType="String"/>
+        <result property="adminId" column="adminid" javaType="Integer"/>
+        <result property="bmdId" column="bmdid" javaType="Integer"/>
+        <result property="deleteStatus" column="deletestatus" javaType="String"/>
+        <result property="grade" column="grade" javaType="String"/>
+        <result property="raceId" column="raceid" javaType="Integer"/>
+        <association property="bmd" column="bmdid" javaType="Bmd" select="com.ldj.hj.dao.BmdDao.selectByBmdId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true">
+        insert into usert(useraccount,userpwd,boyname,girlname,useridcard,raceproject,phone,region,checkstatus,adminid,bmdid,deletestatus,grade,raceid)
+        values(#{userAccount},#{userPwd},#{boyName},#{girlName},#{userIdCard},#{raceProject},#{phone},#{region},#{checkStatus},#{adminId},#{bmdId},#{deleteStatus},#{grade},#{raceId})
+    </insert>
+
+    <delete id="delete" parameterType="Integer" >
+        delete from usert where userid=#{userId}
+    </delete>
+
+    <update id="updataDelete">
+        update usert set deletestatus="已删除" where userid=#{userId}
+    </update>
+
+    <select id="selectUserByDeleteAndRace" parameterType="String" resultMap="resultMap">
+        select * from usert where deletestatus="未删除" 
+        <if test="raceProject != ''"> and raceproject=#{raceProject}</if>
+    </select>
+    <select id="selectUserByRaceProject" parameterType="String" resultMap="resultMap">
+        select * from usert where raceproject=#{raceProject}
+    </select>
+
+    <select id="selectUserByDeleteAndBmdId" parameterType="Integer" resultMap="resultMap">
+        select * from usert where bmdid=#{bmdId} and deletestatus="未删除"
+    </select>
+
+    <select id="selectUserByBmdIdAndOtherCondition" parameterType="User" resultMap="resultMap">
+        select * from usert
+        <where>
+            <if test="bmdId != null and bmdId != ''">
+                bmdid=#{bmdId}
+            </if>
+            <if test="checkStatus != null and checkStatus != ''"> and checkstatus=#{checkStatus}</if>
+            <if test="deleteStatus != null and deleteStatus != ''"> and deletestatus=#{deleteStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectUserByDeleteAndAdminId" parameterType="Integer" resultMap="resultMap">
+        select * from usert where adminid=#{adminId} and deletestatus="未删除"
+    </select>
+    <select id="countUserByDeleteAndIdcard" parameterType="Integer" resultType="Integer">
+        select count(distinct useridcard) from usert where bmdid=#{bmdId} and deletestatus="未删除"
+    </select>
+
+    <update id="update" parameterType="User">
+        update usert set useraccount=#{userAccount},userpwd=#{userPwd},boyname=#{boyName},girlname=#{girlName},useridcard=#{userIdCard},raceproject=#{raceProject},phone=#{phone},region=#{region},checkstatus=#{checkStatus},adminid=#{adminId},bmdid=#{bmdId},deletestatus=#{deleteStatus},grade=#{grade},raceid=#{raceId} where userid=#{userId}
+    </update>
+
+    <select id="selectByUserId" parameterType="Integer" resultMap="resultMap">
+        select * from usert where userid=#{userId}
+    </select>
+
+    <select id="selectUserByBmdId" parameterType="Integer" resultMap="resultMap">
+        select * from usert where bmdid=#{bmdId}
+    </select>
+
+    <select id="selectUserAll" resultMap="resultMap">
+        select * from usert
+    </select>
+</mapper>

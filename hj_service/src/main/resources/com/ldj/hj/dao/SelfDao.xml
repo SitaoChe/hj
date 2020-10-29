@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.SelfDao">
+
+    <select id="selectBySuperAccount" parameterType="String" resultMap="com.ldj.hj.dao.SuperDao.resultMap">
+        select * from super where superaccount = #{superAccount}
+    </select>
+
+    <select id="selectByAdminAccount" parameterType="String" resultMap="com.ldj.hj.dao.AdminDao.resultMap">
+        select * from admin where adminaccount = #{adminAccount}
+    </select>
+
+    <select id="selectByBmdAccount" parameterType="String" resultMap="com.ldj.hj.dao.BmdDao.resultMap">
+        select * from bmd where bmdaccount = #{bmdAccount}
+    </select>
+
+    <select id="selectByUserAccount" parameterType="String" resultMap="com.ldj.hj.dao.UserDao.resultMap">
+        select * from usert where useraccount = #{userAccount}
+    </select>
+
+
+</mapper>

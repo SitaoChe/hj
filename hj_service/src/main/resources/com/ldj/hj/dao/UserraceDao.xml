@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldj.hj.dao.UserraceDao">
+    <resultMap id="resultMap" type="Userrace">
+        <id property="userraceId" column="userraceid" javaType="Integer"/>
+        <result property="userId" column="userid" javaType="Integer"/>
+        <result property="raceId" column="raceid" javaType="Integer"/>
+        <result property="grade" column="grade" javaType="String"/>
+        <association property="user" column="userid" javaType="User" select="com.ldj.hj.dao.UserDao.selectByUserId"/>
+        <association property="race" column="raceid" javaType="Race" select="com.ldj.hj.dao.RaceDao.selectByRaceId"/>
+
+    </resultMap>
+
+    <insert id="insert" parameterType="Userrace" useGeneratedKeys="true">
+        insert into userrace(userid,raceid,grade) values(#{userId},#{raceId},#{grade})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        delete from userrace where userraceid=#{userraceId}
+    </delete>
+
+    <update id="update" parameterType="Userrace">
+        update userrace set userid=#{userId},raceid=#{raceId},grade=#{grade} where userraceid = #{userraceId}
+    </update>
+
+    <select id="selectUserraceByUserraceId" parameterType="Integer" resultMap="resultMap">
+        select * from userrace where userraceid=#{userraceId}
+    </select>
+
+    <select id="selectUserraceByRaceId" parameterType="Integer" resultMap="resultMap">
+        select * from userrace where raceid=#{raceId} order by grade desc
+    </select>
+
+    <select id="selectUserraceByUserId" parameterType="Integer" resultMap="resultMap">
+        select * from userrace where userid=#{userId}
+    </select>
+
+    <select id="selectUserraceAll" resultMap="resultMap">
+        select * from userrace
+    </select>
+
+</mapper>
