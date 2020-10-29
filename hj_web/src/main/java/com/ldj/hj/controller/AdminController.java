@@ -572,9 +572,18 @@ public class AdminController {
                 return map;
             }
             for (Map<String, String> dataMap : listData) {
-                System.out.println(keys[0] + ":" + dataMap.get(keys[0]));
-                System.out.println(keys[1] + ":" + dataMap.get(keys[1]));
-                System.out.println(keys[2] + ":" + dataMap.get(keys[2]));
+                User usert = new User();
+                usert.setBoyName(dataMap.get(keys[0]));
+                usert.setGirlName(dataMap.get(keys[1]));
+                usert.setUserIdCard(dataMap.get(keys[2]));
+                usert.setRaceProject(dataMap.get(keys[3]));
+                usert.setRegion(dataMap.get(keys[4]));
+                usert.setUserId(Integer.parseInt(dataMap.get(keys[5])));
+                usert.setGrade(dataMap.get(keys[6]));
+                usert.setCheckStatus(dataMap.get(keys[7]));
+                userService.addUser(usert);
+//                System.out.println(keys[0] + ":" + dataMap.get(keys[0]));
+//                System.out.println(keys[1] + ":" + dataMap.get(keys[1]));
             }
             map.put("listData", listData);
             map.put("code", 1);
