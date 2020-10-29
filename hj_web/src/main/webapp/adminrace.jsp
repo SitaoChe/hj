@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="${baseurl}/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Fontastic Custom icon font-->
     <link rel="stylesheet" href="${baseurl}/css/fontastic.css">
+    <link rel="stylesheet" href="${baseurl}/css/webuploader.css">
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
@@ -223,10 +224,11 @@
 <script src="${baseurl}/js/front.js"></script>
 <script type="text/javascript" src="${baseurl}/js/webuploader.html5only.min.js"></script>
 <script>
+
     //上传文件
     var uploader = WebUploader.create({
         auto: true,
-        server: '/importExcel',
+        server: 'importExcel.do',
         pick: '#J_upload',
         resize: false,
         accept: {
@@ -239,12 +241,16 @@
     });
 
     uploader.on('uploadSuccess', function(file, response) {
-        console.log('上传成功');
+        alert('上传成功');
         console.log(response.listData);
     });
 
     uploader.on('uploadError', function(file) {
+        console.log("file : "+file)
         alert('上传出错');
+    });
+    uploader.on( 'uploadComplete', function( file ) {
+        console.log("file : "+file)
     });
 
     setTimeout(function(){

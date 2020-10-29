@@ -560,7 +560,8 @@ public class AdminController {
      * @param filePro
      * @return
      */
-    @RequestMapping(value="/importExcel")
+    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
+    @ResponseBody
     public Map<String, Object> importExcel(HttpServletRequest request,HttpServletResponse response, String filePro){
         Map<String, Object> map = new HashMap<>();
         String keys[] = {"boyName","girlName","userIdCard","raceProject","region","userId","grade","checkStatus"};
@@ -593,6 +594,4 @@ public class AdminController {
         }
         return map;
     }
-
-
 }

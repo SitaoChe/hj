@@ -14,7 +14,6 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd"
 >
 
-<!--    <mvc:default-servlet-handler/>-->
     <!-- Spring整合Mybatis -->
     <!--    数据源-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

@@ -8,25 +8,29 @@ import com.ldj.hj.entity.Race;
 import com.ldj.hj.entity.User;
 import com.ldj.hj.service.BmdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("bmdService")
 public class BmdServiceImpl implements BmdService {
+    @Qualifier("bmdDao")
     @Autowired
     private BmdDao bmdDao;
+    @Qualifier("raceDao")
     @Autowired
     private RaceDao raceDao;
+    @Qualifier("userDao")
     @Autowired
     private UserDao userDao;
 
-    @Override
+
     public void addBmd(Bmd bmd) {
         bmdDao.insert(bmd);
     }
 
-    @Override
+
     public void removeBmd(Integer bmdId) {
         List<User> userList = userDao.selectUserByBmdId(bmdId);
         for(User user:userList){
@@ -35,17 +39,17 @@ public class BmdServiceImpl implements BmdService {
         bmdDao.delete(bmdId);
     }
 
-    @Override
+
     public void editBmd(Bmd bmd) {
         bmdDao.update(bmd);
     }
 
-    @Override
+
     public Bmd getBmd(Integer bmdId) {
         return bmdDao.selectByBmdId(bmdId);
     }
 
-    @Override
+
     public Integer getNumByBmdId(Integer bmdId, boolean isOrder) {
         List<User> userList = userDao.selectUserByDeleteAndBmdId(bmdId);
         if(isOrder) return userList.size();
@@ -55,7 +59,7 @@ public class BmdServiceImpl implements BmdService {
         }
     }
 
-    @Override
+
     public double getMoneyByBmdId(Integer bmdId, boolean isPay) {
         double bmdMoney = 0.0;
         User user = new User();
@@ -77,7 +81,7 @@ public class BmdServiceImpl implements BmdService {
         return bmdMoney;
     }
 
-    @Override
+
     public List<Bmd> getAllBmd(Integer adminId) {
         return bmdDao.selectBmdAll(adminId);
     }
