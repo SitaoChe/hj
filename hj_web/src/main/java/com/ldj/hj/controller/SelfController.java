@@ -1,9 +1,6 @@
 package com.ldj.hj.controller;
 
-import com.ldj.hj.entity.Admin;
-import com.ldj.hj.entity.Bmd;
-import com.ldj.hj.entity.Super;
-import com.ldj.hj.entity.User;
+import com.ldj.hj.entity.*;
 import com.ldj.hj.service.SelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,6 +64,18 @@ public class SelfController {
                 session.setAttribute("BMD",bmd);
 //                response.sendRedirect("bmd/bmdIndex.do");
                 return "redirect:/bmd/bmdIndex.do";
+            }
+        }else if (account.indexOf("ywy") != -1){
+            Ywy ywy = selfService.ywyLogin(account,password);
+            if (ywy == null){
+                request.setAttribute("errorMsg","账号或密码错误，请重新登录!");
+                request.getRequestDispatcher("toLogin.do").forward(request,response);
+//                response.sendRedirect("toLogin.do");
+            }else {
+                HttpSession session = request.getSession();
+                session.setAttribute("YWY",ywy);
+//                response.sendRedirect("ywy/ywyIndex.do");
+                return "redirect:/ywy/ywyIndex.do";
             }
         }else {
             request.setAttribute("errorMsg","请输入合理的账号名");

@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private Integer userId;
     private String userAccount;
     private String userPwd;

@@ -27,10 +27,12 @@ public class LoginFilter implements Filter {
             HttpSession bmdSession = request.getSession();
             HttpSession adminSession = request.getSession();
             HttpSession superSession = request.getSession();
+            HttpSession ywySession = request.getSession();
             Object objUser = userSession.getAttribute("USER");
             Object objBmd = bmdSession.getAttribute("BMD");
             Object objAdmin = adminSession.getAttribute("ADMIN");
             Object objSuperAdmin = superSession.getAttribute("SUPER");
+            Object objYwy = superSession.getAttribute("YWY");
             if ( objUser != null ){
                 filterChain.doFilter(request,response);
             } else if (objBmd != null){
@@ -39,7 +41,9 @@ public class LoginFilter implements Filter {
                 filterChain.doFilter(request,response);
             } else if (objSuperAdmin != null){
                 filterChain.doFilter(request,response);
-            } else {
+            }else if (objYwy != null){
+                filterChain.doFilter(request,response);
+            }  else {
                 response.sendRedirect(request.getContextPath()+"/login.jsp");
             }
         }

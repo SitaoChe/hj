@@ -65,6 +65,7 @@
             <h5 class="sidenav-heading">菜单</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
                 <li><a href="adminIndex.do"> <i class="icon-home"></i>首页</a></li>
+                <li><a href="adminYwy.do"> <i class="icon-flask"></i>业务员</a></li>
                 <li><a href="adminBmd.do"> <i class="icon-form"></i>参赛单位</a></li>
                 <li><a href="adminSsb.do"> <i class="fa fa-bar-chart"></i>赛事表</a></li>
                 <li><a href="adminXsb.do"> <i class="icon-grid"></i>选手表</a></li>
@@ -124,6 +125,7 @@
                                 <input type="hidden" name="perNumber" value="${OBJBMD.perNumber}">
                                 <input type="hidden" name="perOrder" value="${OBJBMD.perOrder}">
                                 <input type="hidden" name="money" value="${OBJBMD.money}">
+                                <input type="hidden" name="ywyId" value="${OBJBMD.ywyId}">
                                 <div class="form-group row">
                                     <label class="col-sm-3">参赛单位账号</label>
                                     <div class="col-sm-7">

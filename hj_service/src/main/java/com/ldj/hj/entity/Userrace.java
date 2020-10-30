@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class Userrace {
+import java.io.Serializable;
+
+public class Userrace implements Serializable {
     private Integer userraceId;
     private Integer userId;
     private Integer raceId;

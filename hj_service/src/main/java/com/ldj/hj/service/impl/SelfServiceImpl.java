@@ -1,10 +1,7 @@
 package com.ldj.hj.service.impl;
 
 import com.ldj.hj.dao.SelfDao;
-import com.ldj.hj.entity.Admin;
-import com.ldj.hj.entity.Bmd;
-import com.ldj.hj.entity.Super;
-import com.ldj.hj.entity.User;
+import com.ldj.hj.entity.*;
 import com.ldj.hj.service.SelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,6 +42,13 @@ public class SelfServiceImpl implements SelfService {
         User user = selfDao.selectByUserAccount(userAccount);
         if (user == null) return null;
         if (user.getUserPwd().equals(userPwd)) return user;
+        return null;
+    }
+
+    public Ywy ywyLogin(String ywyAccount, String ywyPwd) {
+        Ywy ywy = selfDao.selectByYwyAccount(ywyAccount);
+        if (ywy == null) return null;
+        if (ywy.getYwyPwd().equals(ywyPwd)) return  ywy;
         return null;
     }
 }

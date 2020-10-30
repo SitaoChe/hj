@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class Bmd {
+import java.io.Serializable;
+
+public class Bmd implements Serializable {
     private Integer bmdId;
     private String bmdAccount;
     private String bmdPwd;
@@ -19,6 +21,15 @@ public class Bmd {
     private Integer perOrder;
     private String money;
     private String status;
+    private Integer ywyId;
+
+    public Integer getYwyId() {
+        return ywyId;
+    }
+
+    public void setYwyId(Integer ywyId) {
+        this.ywyId = ywyId;
+    }
 
     public Integer getPerNumber() {
         return perNumber;

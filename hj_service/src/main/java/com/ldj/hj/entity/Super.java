@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class Super {
+import java.io.Serializable;
+
+public class Super implements Serializable {
     private Integer superId;
     private String superAccount;
     private String superPwd;

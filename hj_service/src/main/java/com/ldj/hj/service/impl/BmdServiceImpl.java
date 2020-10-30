@@ -81,6 +81,15 @@ public class BmdServiceImpl implements BmdService {
         return bmdMoney;
     }
 
+    public List<Bmd> getBmdByYwyId(Integer ywyId) {
+        return bmdDao.selectByYwyId(ywyId);
+    }
+
+
+    public List<Bmd> getBmdByFuture() {
+        return bmdDao.selectFutureBmd();
+    }
+
 
     public List<Bmd> getAllBmd(Integer adminId) {
         return bmdDao.selectBmdAll(adminId);

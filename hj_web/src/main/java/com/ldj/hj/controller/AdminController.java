@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.ldj.hj.entity.*;
-import com.ldj.hj.service.BmdService;
-import com.ldj.hj.service.RaceService;
-import com.ldj.hj.service.UserService;
-import com.ldj.hj.service.UserraceService;
+import com.ldj.hj.service.*;
 import com.ldj.hj.util.CommUtil;
 import com.ldj.hj.util.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -45,6 +42,9 @@ public class AdminController {
 
     @Autowired
     private UserraceService userraceService;
+
+    @Autowired
+    private YwyService ywyService;
 
     @RequestMapping("/adminIndex")
     public String adminIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -169,6 +169,7 @@ public class AdminController {
         String bmdPhone = request.getParameter("bmdphone");
         String bmdAddress = request.getParameter("bmdaddress");
         String bmdMessage = request.getParameter("bmdmessage");
+        String ywyId = request.getParameter("ywyId");
         Integer perNumber = request.getParameter("perNumber") == ""?0:Integer.parseInt(request.getParameter("perNumber"));
         Integer perOrder = request.getParameter("perOrder") == ""?0:Integer.parseInt(request.getParameter("perOrder"));
         String money = request.getParameter("money");
@@ -195,6 +196,7 @@ public class AdminController {
         bmd.setMoney(money);
         bmd.setStatus(status);
         bmd.setAdminId(adminId);
+        bmd.setYwyId(ywyId == null?0:Integer.parseInt(ywyId));
         bmdService.editBmd(bmd);
 
         response.sendRedirect("adminBmd.do");
@@ -627,8 +629,8 @@ public class AdminController {
         String fileName = CommUtil.formatTime("yyyyMMddHHmmss", new Date()) +".xls";
 
 
-        String columnNames[] = {"背号","男选手","女选手","组别名称","分组","身份证","区域","成绩","状态"};
-        String keys[] = {"userId","boyName","girlName","raceProject","groupsNum","userIdCard","region","grade","checkStatus"};
+        String columnNames[] = {"背号","男选手","女选手","组别名称","比赛开始时间","分组","身份证","区域","成绩","状态"};
+        String keys[] = {"userId","boyName","girlName","raceProject","startRace","groupsNum","userIdCard","region","grade","checkStatus"};
         List<Map<String,Object>> listMap = new ArrayList<>();
         for (User user:userList){
             Map<String,Object> map = new HashMap<>();
@@ -636,6 +638,8 @@ public class AdminController {
             map.put("boyName",user.getBoyName());
             map.put("girlName",user.getGirlName());
             map.put("raceProject",user.getRaceProject());
+            Race race = raceService.getRace(user.getRaceId());
+            map.put("startRace",race.getStartRace());
             map.put("groupsNum",user.getGroupsNum());
             map.put("userIdCard",user.getUserIdCard());
             map.put("region",user.getRegion());
@@ -726,7 +730,7 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> importExcel(HttpServletRequest request,HttpServletResponse response, String filePro){
         Map<String, Object> map = new HashMap<>();
-        String keys[] = {"userId","boyName","girlName","raceProject","userIdCard","region","grade","checkStatus"};
+        String keys[] = {"userId","boyName","girlName","raceProject","startRace","groupsNum","userIdCard","region","grade","checkStatus"};
         try {
             List<Map<String,String>> listData = ExcelUtil.getExcelData(request, "file",keys);
             if(listData.size() == 0){
@@ -736,17 +740,18 @@ public class AdminController {
             }
             for (Map<String, String> dataMap : listData) {
                     User usert = new User();
-                    usert.setUserIdCard(dataMap.get(keys[2]));
                     usert.setRaceProject(dataMap.get(keys[3]));
+                    usert.setUserIdCard(dataMap.get(keys[6]));
                     User user = userService.getUserByUserIdCardAndRaceProject(usert);
 //                user.setUserId(Integer.parseInt(dataMap.get(keys[0])));
                     user.setBoyName(dataMap.get(keys[1]));
                     user.setGirlName(dataMap.get(keys[2]));
                     user.setRaceProject(dataMap.get(keys[3]));
-                    user.setUserIdCard(dataMap.get(keys[4]));
-                    user.setRegion(dataMap.get(keys[5]));
-                    user.setGrade(dataMap.get(keys[6]));
-                    user.setCheckStatus(dataMap.get(keys[7]));
+                    user.setGroupsNum(dataMap.get(keys[5]) == null?0:Integer.parseInt(dataMap.get(keys[5])));
+                    user.setUserIdCard(dataMap.get(keys[6]));
+                    user.setRegion(dataMap.get(keys[7]));
+                    user.setGrade(dataMap.get(keys[8]));
+                    user.setCheckStatus(dataMap.get(keys[9]));
                     userService.editUser(user);
             }
             map.put("listData", listData);
@@ -756,5 +761,79 @@ public class AdminController {
             e.printStackTrace();
         }
         return map;
+    }
+
+    @RequestMapping("/adminYwy")
+    public void adminYwy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Ywy> ywyList = ywyService.getAllYwy();
+        request.setAttribute("YWYLIST",ywyList);
+        request.getRequestDispatcher("../adminywy.jsp").forward(request,response);
+    }
+    @RequestMapping("/adminYwyToAdd")
+    public void adminYwyToAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("../adminywyadd.jsp").forward(request,response);
+    }
+    @RequestMapping("/adminYwyAdd")
+    public void adminYwyAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String ywyAccount = request.getParameter("ywyaccount");
+        String ywyPwd = request.getParameter("ywypwd");
+        String ywyName = request.getParameter("ywyname");
+        String idCard = request.getParameter("idcard");
+        String phone = request.getParameter("phone");
+
+        boolean isExist = false;
+        List<Ywy> ywyList = ywyService.getAllYwy();
+        if(ywyList.size() > 0)
+            for (Ywy ywy : ywyList){
+                if(ywy.getYwyAccount().equals(ywyAccount)) isExist = true;
+            }
+        if(isExist){
+            request.setAttribute("msg","该账户已存在");
+            request.getRequestDispatcher("adminYwyToAdd.do").forward(request,response);
+        }else {
+            Ywy ywy = new Ywy();
+            ywy.setYwyAccount(ywyAccount);
+            ywy.setYwyPwd(ywyPwd);
+            ywy.setYwyName(ywyName);
+            ywy.setIdCard(idCard);
+            ywy.setPhone(phone);
+
+            ywyService.addYwy(ywy);
+            response.sendRedirect("adminYwy.do");
+
+        }
+    }
+    @RequestMapping("/adminYwyToEdit")
+    public void adminYwyToEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer ywyId = Integer.parseInt(request.getParameter("ywyid"));
+        Ywy ywy = ywyService.getYwy(ywyId);
+        request.setAttribute("OBJYWY",ywy);
+        request.getRequestDispatcher("../adminywyedit.jsp").forward(request,response);
+    }
+    @RequestMapping("/adminYwyEdit")
+    public void adminYwyEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer ywyId = Integer.parseInt(request.getParameter("ywyid"));
+        String ywyAccount = request.getParameter("ywyaccount");
+        String ywyPwd = request.getParameter("ywypwd");
+        String ywyName = request.getParameter("ywyname");
+        String idCard = request.getParameter("idcard");
+        String phone = request.getParameter("phone");
+
+        Ywy ywy = new Ywy();
+        ywy.setYwyId(ywyId);
+        ywy.setYwyAccount(ywyAccount);
+        ywy.setYwyPwd(ywyPwd);
+        ywy.setYwyName(ywyName);
+        ywy.setIdCard(idCard);
+        ywy.setPhone(phone);
+        ywyService.editYwy(ywy);
+
+        response.sendRedirect("adminYwy.do");
+    }
+    @RequestMapping("/removeYwy")
+    public void removeYwy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer ywyId = Integer.parseInt(request.getParameter("ywyid"));
+        ywyService.removeYwy(ywyId);
+        response.sendRedirect("adminYwy.do");
     }
 }

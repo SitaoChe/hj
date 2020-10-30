@@ -11,6 +11,8 @@ public interface BmdDao {
     void delete(Integer bmdId);
     void update(Bmd bmd);
     Bmd selectByBmdId(Integer bmdId);
+    List<Bmd> selectByYwyId(Integer ywyId);
+    List<Bmd> selectFutureBmd();
     List<Bmd> selectBmdAll(Integer adminId);
 
 }

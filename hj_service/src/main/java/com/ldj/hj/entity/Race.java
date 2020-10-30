@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class Race {
+import java.io.Serializable;
+
+public class Race implements Serializable {
     private Integer raceId;
     private String raceName;
     private String startAge;

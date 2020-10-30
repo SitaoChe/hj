@@ -20,12 +20,13 @@
         <result property="perOrder" column="perorder" javaType="Integer"/>
         <result property="money" column="money" javaType="String"/>
         <result property="status" column="status" javaType="String"/>
+        <result property="ywyId" column="ywyid" javaType="Integer"/>
         <association property="admin" column="adminid" javaType="Admin" select="com.ldj.hj.dao.AdminDao.selectByAdminId"/>
     </resultMap>
 
     <insert id="insert" parameterType="Bmd" useGeneratedKeys="true">
-        insert into bmd(bmdaccount,bmdpwd,name,idcard,address,phone,bmdcontact,bmdphone,bmdaddress,bmdmessage,adminid,team)
-        values(#{bmdAccount},#{bmdPwd},#{name},#{idCard},#{address},#{phone},#{bmdContact},#{bmdPhone},#{bmdAddress},#{bmdMessage},#{adminId},#{team})
+        insert into bmd(bmdaccount,bmdpwd,name,idcard,address,phone,bmdcontact,bmdphone,bmdaddress,bmdmessage,adminid,team,ywyid)
+        values(#{bmdAccount},#{bmdPwd},#{name},#{idCard},#{address},#{phone},#{bmdContact},#{bmdPhone},#{bmdAddress},#{bmdMessage},#{adminId},#{team},#{ywyId})
     </insert>
 
     <delete id="delete" parameterType="Integer" >
@@ -35,12 +36,20 @@
     <update id="update" parameterType="Bmd">
         update bmd set bmdaccount=#{bmdAccount},bmdpwd=#{bmdPwd},name=#{name},idcard=#{idCard},address=#{address},phone=#{phone},
         bmdcontact=#{bmdContact},bmdphone=#{bmdPhone},bmdaddress=#{bmdAddress},bmdmessage=#{bmdMessage},adminid=#{adminId},team=#{team},
-        pernumber=#{perNumber},perorder=#{perOrder},money=#{money},status=#{status}
+        pernumber=#{perNumber},perorder=#{perOrder},money=#{money},status=#{status},ywyid=#{ywyId}
         where bmdid=#{bmdId}
     </update>
 
     <select id="selectByBmdId" parameterType="Integer" resultMap="resultMap">
         select * from bmd where bmdid=#{bmdId}
+    </select>
+
+    <select id="selectByYwyId" parameterType="Integer" resultMap="resultMap">
+        select * from bmd where ywyid=#{ywyId}
+    </select>
+
+    <select id="selectFutureBmd" resultMap="resultMap">
+        select * from bmd where ywyid is not null
     </select>
 
     <select id="selectBmdAll" parameterType="Integer" resultMap="resultMap">

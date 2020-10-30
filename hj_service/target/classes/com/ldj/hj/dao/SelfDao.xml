@@ -19,5 +19,8 @@
         select * from usert where useraccount = #{userAccount}
     </select>
 
+    <select id="selectByYwyAccount" parameterType="String" resultMap="com.ldj.hj.dao.YwyDao.resultMap">
+        select * from ywy where ywyaccount = #{ywyAccount}
+    </select>
 
 </mapper>

@@ -1,6 +1,8 @@
 package com.ldj.hj.entity;
 
-public class Admin {
+import java.io.Serializable;
+
+public class Admin implements Serializable {
     private Integer adminId;
     private String adminAccount;
     private String adminPwd;

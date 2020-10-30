@@ -11,5 +11,7 @@ public interface BmdService {
     Bmd getBmd(Integer bmdId);
     Integer getNumByBmdId(Integer bmdId,boolean isOrder); //
     double getMoneyByBmdId(Integer bmdId,boolean isPay);
+    List<Bmd> getBmdByYwyId(Integer ywyId);
+    List<Bmd> getBmdByFuture();
     List<Bmd> getAllBmd(Integer adminId);
 }
