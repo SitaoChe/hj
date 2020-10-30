@@ -15,25 +15,34 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+    <c:set var="baseurl" value="${pageContext.request.contextPath}"></c:set>
+    <script type="text/javascript">
+        <%--to record pronect Name (contextPath=/jwxt)--%>
+        contextPath = "${pageContext.request.contextPath}";
+    </script>
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="../css/fontastic.css">
+    <link rel="stylesheet" href="${baseurl}/css/fontastic.css">
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
-    <link rel="stylesheet" href="../css/grasp_mobile_progress_circle-1.0.0.min.css">
+    <link rel="stylesheet" href="${baseurl}/css/grasp_mobile_progress_circle-1.0.0.min.css">
     <!-- Custom Scrollbar-->
-    <link rel="stylesheet" href="../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="../css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="${baseurl}/css/style.default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="${baseurl}/css/custom.css">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="../img/logo.png">
-    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <link rel="shortcut icon" href="${baseurl}/img/logo.png">
+    <script type="text/javascript" src="${baseurl}/js/jquery-1.8.3.min.js"></script>
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -45,7 +54,7 @@
         <!-- Sidebar Header    -->
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
-            <div class="sidenav-header-inner text-center"><img src="../img/logo.png" alt="person" class="img-fluid rounded-circle">
+            <div class="sidenav-header-inner text-center"><img src="${baseurl}/img/logo.png" alt="person" class="img-fluid rounded-circle">
                 <h2 class="h5">普通管理员</h2><span>泓吉文化有限公司</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
@@ -108,29 +117,44 @@
 
                             <form action="adminSsbAdd.do" method="post" name="adminSsbAdd" class="form-horizontal" onsubmit="return verify()">
                                 <div class="form-group row">
-                                    <label class="col-sm-3">舞种</label>
+                                    <label class="col-sm-3">赛事名称</label>
                                     <div class="col-sm-7">
-                                        <input type="text" required="required" name="racename1" class="form-control form-control-success">
+                                        <input type="text" required="required" name="racename1" placeholder="如：亚洲赛摩登舞" class="form-control form-control-success">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3">组别</label>
                                     <div class="col-sm-7">
-                                        <input type="text" required="required" name="racename2" class="form-control form-control-success">
+                                        <input type="text" required="required" name="racename2" placeholder="如：少年A组" class="form-control form-control-success">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3">特色组</label>
+                                    <label class="col-sm-3">最小年龄</label>
                                     <div class="col-sm-7">
-                                        <input type="text" required="required" name="startage" placeholder="如：精英组、金杯组等" class="form-control form-control-success"><span id="messageStartAge"></span>
+                                        <input type="text" required="required" name="startage"  class="form-control form-control-success"><span id="messageStartAge"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3">年龄</label>
+                                    <label class="col-sm-3">最大年龄</label>
                                     <div class="col-sm-7">
                                         <input type="text" required="required"  name="endage" class="form-control form-control-success"><span id="messageEndAge"></span>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3">特色组</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" required="required" name="racetype" placeholder="如：精英组、金杯组等" class="form-control form-control-success"><span id="messageStartAge"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3">舞种</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" required="required" name="dancetype" placeholder="如：W,T,VW,Q" class="form-control form-control-success"><span id="messageStartAge"></span>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-sm-3">报名时间</label>
                                     <div class="col-sm-7">
@@ -146,7 +170,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3">比赛开始时间</label>
                                     <div class="col-sm-7">
-                                        <input type="text" required="required" name="startrace"  class="form-control form-control-success" class="Wdate" onclick="WdatePicker()">
+                                        <input type="text" required="required" name="startrace"  class="form-control form-control-success" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',startDate:'%y-%M-%d 00:00:00'})">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -222,17 +246,17 @@
         else return true;
     }
 </script>
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/popper.js/umd/popper.min.js"> </script>
-<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-<script src="../vendor/jquery.cookie/jquery.cookie.js"> </script>
-<script src="../vendor/chart.js/Chart.min.js"></script>
-<script src="../vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${baseurl}/vendor/jquery/jquery.min.js"></script>
+<script src="${baseurl}/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="${baseurl}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="${baseurl}/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+<script src="${baseurl}/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="${baseurl}/vendor/chart.js/Chart.min.js"></script>
+<script src="${baseurl}/vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="${baseurl}/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Main File-->
-<script src="../My97DatePicker/calendar.js"></script>
-<script src="../My97DatePicker/WdatePicker.js"></script>
-<script src="../js/front.js"></script>
+<script src="${baseurl}/My97DatePicker/calendar.js"></script>
+<script src="${baseurl}/My97DatePicker/WdatePicker.js"></script>
+<script src="${baseurl}/js/front.js"></script>
 </body>
 </html>

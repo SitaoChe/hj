@@ -23,7 +23,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-@Controller("superController")
+@Controller
+@RequestMapping("/super")
 public class SuperController {
     @Autowired
     private SuperService superService;
@@ -37,26 +38,28 @@ public class SuperController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/superIndex")
     public void superIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("../superindex.jsp").forward(request,response);
     }
-
-    public void superLoginOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping("/superLoginOut")
+    public String superLoginOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("SUPER",null);
-        response.sendRedirect(request.getContextPath()+"/toLogin.do");
+//        response.sendRedirect(request.getContextPath()+"/toLogin.do");
+        return "redirect:/self/toLogin.do";
     }
-
+    @RequestMapping("/superGl")
     public void superGl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Admin> adminList = adminService.getAllAdmin();
         request.setAttribute("ADMINLIST",adminList);
         request.getRequestDispatcher("../supergl.jsp").forward(request,response);
     }
-
+    @RequestMapping("/superGlToAdd")
     public void superGlToAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("../supergladd.jsp").forward(request,response);
     }
-
+    @RequestMapping("/superGlAdd")
     public void superGlAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String adminAccount = request.getParameter("adminaccount");
         String adminPwd = request.getParameter("adminpwd");
@@ -79,14 +82,14 @@ public class SuperController {
 
         }
     }
-
+    @RequestMapping("/superGlToEdit")
     public void superGlToEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer adminId = Integer.parseInt(request.getParameter("adminid"));
         Admin admin = adminService.getAdmin(adminId);
         request.setAttribute("OBJADMIN",admin);
         request.getRequestDispatcher("../supergledit.jsp").forward(request,response);
     }
-
+    @RequestMapping("/superGlEdit")
     public void superGlEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer adminId = Integer.parseInt(request.getParameter("adminid"));
         String adminAccount = request.getParameter("adminaccount");
@@ -100,31 +103,31 @@ public class SuperController {
 
         response.sendRedirect("superGl.do");
     }
-
+    @RequestMapping("/removeAdmin")
     public void removeAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer adminId = Integer.parseInt(request.getParameter("adminid"));
         adminService.removeAdmin(adminId);
         response.sendRedirect("superGl.do");
     }
-
+    @RequestMapping("/superSsb")
     public void superSsb(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Race> raceList = raceService.getAllRace();
         request.setAttribute("RACELIST",raceList);
         request.getRequestDispatcher("../superssb.jsp").forward(request,response);
     }
-
+    @RequestMapping("/superSsbLock")
     public void superSsbLock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer raceId = Integer.parseInt(request.getParameter("raceid"));
         raceService.editLock(raceId);
         response.sendRedirect("superSsb.do");
     }
-
+    @RequestMapping("/superSsbUnlock")
     public void superSsbUnlock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer raceId = Integer.parseInt(request.getParameter("raceid"));
         raceService.editUnlock(raceId);
         response.sendRedirect("superSsb.do");
     }
-
+    @RequestMapping("/superXsb")
     public void superXsb(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int pageNum = 1;
         int pageSize = 10;

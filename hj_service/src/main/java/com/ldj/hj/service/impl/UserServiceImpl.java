@@ -40,6 +40,10 @@ public class UserServiceImpl implements UserService {
         return userDao.selectByUserId(userId);
     }
 
+    public User getUserByUserIdCardAndRaceProject(User user) {
+        return userDao.selectUserByUserIdCardAndRaceProject(user);
+    }
+
 
     public List<User> getUserByDeleteAndRace(String raceProject) {
         return userDao.selectUserByDeleteAndRace(raceProject);
@@ -60,8 +64,16 @@ public class UserServiceImpl implements UserService {
         return userDao.selectUserByBmdId(bmdId);
     }
 
+    public List<User> getAllUserByDelete() {
+        return userDao.getAllUserByDelete();
+    }
+
 
     public List<User> getAllUser() {
         return userDao.selectUserAll();
+    }
+
+    public void updateUsersList(List<User> userList) {
+        userDao.updateUsersList(userList);
     }
 }

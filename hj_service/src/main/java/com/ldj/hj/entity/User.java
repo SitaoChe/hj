@@ -17,6 +17,15 @@ public class User {
     private String deleteStatus;
     private String grade;
     private Integer raceId;
+    private Integer groupsNum;
+
+    public Integer getGroupsNum() {
+        return groupsNum;
+    }
+
+    public void setGroupsNum(Integer groupsNum) {
+        this.groupsNum = groupsNum;
+    }
 
     public Integer getRaceId() {
         return raceId;

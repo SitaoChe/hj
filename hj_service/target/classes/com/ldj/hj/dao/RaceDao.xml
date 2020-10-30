@@ -13,12 +13,14 @@
         <result property="money" column="money" javaType="String"/>
         <result property="lockStatus" column="lockstatus" javaType="String"/>
         <result property="adminId" column="adminid" javaType="Integer"/>
+        <result property="raceType" column="racetype" javaType="String"/>
+        <result property="danceType" column="dancetype" javaType="String"/>
         <association property="admin" column="adminid" javaType="Admin" select="com.ldj.hj.dao.AdminDao.selectByAdminId"/>
     </resultMap>
 
     <insert id="insert" parameterType="Race" useGeneratedKeys="true">
-        insert into race(racename,startage,endage,starttime,endtime,startrace,money,lockstatus,adminid)
-        values(#{raceName},#{startAge},#{endAge},#{startTime},#{endTime},#{startRace},#{money},#{lockStatus},#{adminId})
+        insert into race(racename,startage,endage,starttime,endtime,startrace,money,lockstatus,adminid,racetype,dancetype)
+        values(#{raceName},#{startAge},#{endAge},#{startTime},#{endTime},#{startRace},#{money},#{lockStatus},#{adminId},#{raceType},#{danceType})
     </insert>
 
     <delete id="delete" parameterType="Integer" >
@@ -26,7 +28,10 @@
     </delete>
 
     <update id="update" parameterType="Race">
-        update race set racename=#{raceName},startage=#{startAge},endage=#{endAge},starttime=#{startTime},endtime=#{endTime},startrace=#{startRace},money=#{money},lockstatus=#{lockStatus},adminid=#{adminId} where raceid=#{raceId}
+        update race set racename=#{raceName},startage=#{startAge},endage=#{endAge},starttime=#{startTime},endtime=#{endTime},
+        startrace=#{startRace},money=#{money},lockstatus=#{lockStatus},adminid=#{adminId},
+        racetype=#{raceType},dancetype=#{danceType}
+        where raceid=#{raceId}
     </update>
 
     <update id="updateLock">
@@ -46,7 +51,7 @@
 <!--    </select>-->
 
     <select id="selectRaceByAdminId" parameterType="Integer" resultMap="resultMap">
-        select * from race where adminid=#{adminId}
+        select * from race where adminid=#{adminId} and lockstatus="未锁定"
     </select>
 
     <select id="selectRaceByAdminIdNoLock" parameterType="Integer" resultMap="resultMap">

@@ -75,7 +75,7 @@ public class BmdServiceImpl implements BmdService {
         for(User u : userList){
             Integer raceId = u.getRaceId();
             Race race = raceDao.selectByRaceId(raceId);
-            double money =Double.parseDouble(race.getMoney());
+            double money =(race== null? 0.0:race.getMoney() == null?0.0:Double.parseDouble(race.getMoney()));
             bmdMoney += money;
         }
         return bmdMoney;

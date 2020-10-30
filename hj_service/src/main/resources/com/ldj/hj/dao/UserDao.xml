@@ -18,6 +18,7 @@
         <result property="deleteStatus" column="deletestatus" javaType="String"/>
         <result property="grade" column="grade" javaType="String"/>
         <result property="raceId" column="raceid" javaType="Integer"/>
+        <result property="groupsNum" column="groupsnum" javaType="Integer"/>
         <association property="bmd" column="bmdid" javaType="Bmd" select="com.ldj.hj.dao.BmdDao.selectByBmdId"/>
     </resultMap>
 
@@ -65,11 +66,20 @@
     </select>
 
     <update id="update" parameterType="User">
-        update usert set useraccount=#{userAccount},userpwd=#{userPwd},boyname=#{boyName},girlname=#{girlName},useridcard=#{userIdCard},raceproject=#{raceProject},phone=#{phone},region=#{region},checkstatus=#{checkStatus},adminid=#{adminId},bmdid=#{bmdId},deletestatus=#{deleteStatus},grade=#{grade},raceid=#{raceId} where userid=#{userId}
+        update usert set useraccount=#{userAccount},userpwd=#{userPwd},
+        boyname=#{boyName},girlname=#{girlName},useridcard=#{userIdCard},
+        raceproject=#{raceProject},phone=#{phone},region=#{region},checkstatus=#{checkStatus},
+        adminid=#{adminId},bmdid=#{bmdId},deletestatus=#{deleteStatus},
+        grade=#{grade},raceid=#{raceId} ,groupsnum=#{groupsNum}
+        where userid=#{userId}
     </update>
 
     <select id="selectByUserId" parameterType="Integer" resultMap="resultMap">
         select * from usert where userid=#{userId}
+    </select>
+
+    <select id="selectUserByUserIdCardAndRaceProject" parameterType="User" resultMap="resultMap">
+        select * from usert where useridcard=#{userIdCard} and  raceproject=#{raceProject} and deletestatus="未删除"
     </select>
 
     <select id="selectUserByBmdId" parameterType="Integer" resultMap="resultMap">
@@ -79,4 +89,26 @@
     <select id="selectUserAll" resultMap="resultMap">
         select * from usert
     </select>
+
+    <select id="getAllUserByDelete" resultMap="resultMap">
+        select * from usert where deletestatus="未删除"
+    </select>
+
+
+    <update id="updateUsersList" parameterType="java.util.List">
+        update usert
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="groupsnum =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    when userid=#{item.userId} then #{item.groupsNum}
+                </foreach>
+            </trim>
+        </trim>
+        where userid in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.userId}
+        </foreach>
+    </update>
+
+
 </mapper>

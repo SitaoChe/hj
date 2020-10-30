@@ -11,7 +11,27 @@ public class Race {
     private String money;
     private String lockStatus;
     private Integer adminId;
+    private String raceType;
+    private String danceType;
     private Admin admin;
+
+    public String getRaceType() {
+        return raceType;
+    }
+
+    public void setRaceType(String raceType) {
+        this.raceType = raceType;
+    }
+
+    public String getDanceType() {
+        return danceType;
+    }
+
+    public void setDanceType(String danceType) {
+        this.danceType = danceType;
+    }
+
+
 
     public Integer getRaceId() {
         return raceId;

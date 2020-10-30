@@ -14,6 +14,7 @@ public interface UserDao {
     void updataDelete(Integer userId);
     User selectByUserId(Integer userId);
     Integer countUserByDeleteAndIdcard(Integer bmdId);
+    User selectUserByUserIdCardAndRaceProject(User user);
     List<User> selectUserByBmdIdAndOtherCondition(User user);
     List<User> selectUserByDeleteAndRace(String raceProject);
     List<User> selectUserByDeleteAndBmdId(Integer bmdId);
@@ -21,4 +22,6 @@ public interface UserDao {
     List<User> selectUserByRaceProject(String raceAllName);
     List<User> selectUserByBmdId(Integer bmdId);
     List<User> selectUserAll();
+    List<User> getAllUserByDelete();
+    void updateUsersList(List<User> userList);
 }

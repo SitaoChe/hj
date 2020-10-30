@@ -6,15 +6,23 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>报名首页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+    <c:set var="baseurl" value="${pageContext.request.contextPath}"></c:set>
+    <script type="text/javascript">
+        <%--to record pronect Name (contextPath=/jwxt)--%>
+        contextPath = "${pageContext.request.contextPath}";
+    </script>
+    <link rel="stylesheet" href="${baseurl}/assets/css/style.css">
+    <link rel="stylesheet" href="${baseurl}/assets/css/responsive.css">
 </head>
 <body>
 <!-- main wrapper -->
@@ -44,7 +52,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="logo"><a href="#" class="navbar-brand page-scroll"><img src="../assets/images/logo/logo1.png" alt="logo"></a></div>
+                            <div class="logo"><a href="#" class="navbar-brand page-scroll"><img src="${baseurl}/assets/images/logo/logo1.png" alt="logo"></a></div>
                         </div>
                         <div class="col-lg-9">
                             <div class="navbar-header">
@@ -210,7 +218,7 @@
             <ul class="row best-room_ul">
                 <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/1.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/1.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -227,7 +235,7 @@
                 </li>
                 <li class="col-lg-6 col-md-6 col-sm-12 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/2.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/2.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -244,7 +252,7 @@
                 </li>
                 <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/6.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/6.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -261,7 +269,7 @@
                 </li>
                 <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/4.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/4.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -278,7 +286,7 @@
                 </li>
                 <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/5.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/5.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -295,7 +303,7 @@
                 </li>
                 <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12 best-room_li">
                     <div class="best-room_img">
-                        <a href="#"><img src="../assets/images/best-rooms/3.jpg" alt=""></a>
+                        <a href="#"><img src="${baseurl}/assets/images/best-rooms/3.jpg" alt=""></a>
                         <div class="best-room_overlay">
                             <div class="overlay_icn"><a href="#"></a></div>
                         </div>
@@ -381,7 +389,7 @@
                     <p>一些评论</p>
                 </div>
                 <div class="testimonials-block_user">
-                    <div class="user_img"><img src="../assets/images/testimonials/mike.jpg" alt=""></div>
+                    <div class="user_img"><img src="${baseurl}/assets/images/testimonials/mike.jpg" alt=""></div>
                     <div class="user_n">LDJ</div>
                 </div>
             </div>
@@ -391,7 +399,7 @@
                     <p>一些评论=</p>
                 </div>
                 <div class="testimonials-block_user">
-                    <div class="user_img"><img src="../assets/images/testimonials/mila.png" alt=""></div>
+                    <div class="user_img"><img src="${baseurl}/assets/images/testimonials/mila.png" alt=""></div>
                     <div class="user_n">LZY</div>
                 </div>
             </div>
@@ -406,7 +414,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="footer-top_logo"><a href="userIndex.do"><img src="../assets/images/logo/logo1.png" alt="Footer logo"></a></div>
+                    <div class="footer-top_logo"><a href="userIndex.do"><img src="${baseurl}/assets/images/logo/logo1.png" alt="Footer logo"></a></div>
                     <div class="footer-top_txt">
                         <p>公司的相关简介</p>
                     </div>
@@ -421,7 +429,7 @@
                         <ul>
                             <li>
                                 <div class="rooms_img">
-                                    <a href="blog-detail.html"><img src="../assets/images/footer/1.png" alt=""></a>
+                                    <a href="blog-detail.html"><img src="${baseurl}/assets/images/footer/1.png" alt=""></a>
                                 </div>
                                 <div class="rooms_info">
                                     <div class="rooms_t"><a href="#">拉丁舞</a></div>
@@ -430,7 +438,7 @@
                             </li>
                             <li>
                                 <div class="rooms_img">
-                                    <a href="blog-detail.html"><img src="../assets/images/footer/2.png" alt=""></a>
+                                    <a href="blog-detail.html"><img src="${baseurl}/assets/images/footer/2.png" alt=""></a>
                                 </div>
                                 <div class="rooms_info">
                                     <div class="rooms_t"><a href="#">爵士舞</a></div>
@@ -439,7 +447,7 @@
                             </li>
                             <li>
                                 <div class="rooms_img">
-                                    <a href="blog-detail.html"><img src="../assets/images/footer/3.png" alt=""></a>
+                                    <a href="blog-detail.html"><img src="${baseurl}/assets/images/footer/3.png" alt=""></a>
                                 </div>
                                 <div class="rooms_info">
                                     <div class="rooms_t"><a href="#">街舞</a></div>
@@ -484,17 +492,17 @@
 </div>
 <!-- /footer -->
 <!-- Scripts -->
-<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
-<script type="text/javascript" src="../assets/js/tether.min.js"></script>
-<script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../assets/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../assets/js/moment.min.js"></script>
-<script type="text/javascript" src="../assets/js/jquery.smartmenus.js"></script>
-<script type="text/javascript" src="../assets/js/jquery.parallax.min.js"></script>
-<script type="text/javascript" src="../assets/js/jquery.shuffle.min.js"></script>
-<script type="text/javascript" src="../assets/js/owl.carousel.min.js"></script>
-<script type="text/javascript" src="../assets/js/map.js"></script>
-<script type="text/javascript" src="../assets/js/main.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/tether.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/moment.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/jquery.smartmenus.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/jquery.parallax.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/jquery.shuffle.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/owl.carousel.min.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/map.js"></script>
+<script type="text/javascript" src="${baseurl}/assets/js/main.js"></script>
 <!-- /Scripts -->
 </body>
 </html>

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -15,25 +14,34 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+    <c:set var="baseurl" value="${pageContext.request.contextPath}"></c:set>
+    <script type="text/javascript">
+        <%--to record pronect Name (contextPath=/jwxt)--%>
+        contextPath = "${pageContext.request.contextPath}";
+    </script>
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="../css/fontastic.css">
+    <link rel="stylesheet" href="${baseurl}/css/fontastic.css">
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
-    <link rel="stylesheet" href="../css/grasp_mobile_progress_circle-1.0.0.min.css">
+    <link rel="stylesheet" href="${baseurl}/css/grasp_mobile_progress_circle-1.0.0.min.css">
     <!-- Custom Scrollbar-->
-    <link rel="stylesheet" href="../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="${baseurl}/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="../css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="${baseurl}/css/style.default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="${baseurl}/css/custom.css">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="../img/logo.png">
-    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <link rel="shortcut icon" href="${baseurl}/img/logo.png">
+    <script type="text/javascript" src="${baseurl}/js/jquery-1.8.3.min.js"></script>
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -45,7 +53,7 @@
         <!-- Sidebar Header    -->
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
-            <div class="sidenav-header-inner text-center"><img src="../img/logo.png" alt="person" class="img-fluid rounded-circle">
+            <div class="sidenav-header-inner text-center"><img src="${baseurl}/img/logo.png" alt="person" class="img-fluid rounded-circle">
                 <h2 class="h5">参赛单位</h2><span>泓吉文化有限公司</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
@@ -112,6 +120,7 @@
                                 <input type="hidden" value="${OBJUSER.userAccount}" name="useraccount"  class="form-control form-control-success">
                                 <input type="hidden" value="${OBJUSER.userPwd}" name="userpwd" class="form-control form-control-success">
                                 <input type="hidden" value="${OBJUSER.userPwd}" name="grade">
+                                <input type="hidden" value="${OBJUSER.groupsNum}" name="groupsnum">
 <%--                                <div class="form-group row">--%>
 <%--                                    <label class="col-sm-3">账号</label>--%>
 <%--                                    <div class="col-sm-7">--%>
@@ -273,15 +282,15 @@
         else {return true;}
     }
 </script>
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/popper.js/umd/popper.min.js"> </script>
-<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-<script src="../vendor/jquery.cookie/jquery.cookie.js"> </script>
-<script src="../vendor/chart.js/Chart.min.js"></script>
-<script src="../vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${baseurl}/vendor/jquery/jquery.min.js"></script>
+<script src="${baseurl}/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="${baseurl}/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="${baseurl}/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+<script src="${baseurl}/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="${baseurl}/vendor/chart.js/Chart.min.js"></script>
+<script src="${baseurl}/vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="${baseurl}/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Main File-->
-<script src="../js/front.js"></script>
+<script src="${baseurl}/js/front.js"></script>
 </body>
 </html>

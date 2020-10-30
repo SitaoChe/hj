@@ -9,6 +9,7 @@ import com.ldj.hj.service.UserService;
 import com.ldj.hj.service.UserraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@Controller("userController")
+@Controller
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -29,7 +31,7 @@ public class UserController {
     @Autowired
     private UserraceService userraceService;
 
-
+    @RequestMapping("/userIndex")
     public void userIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("USER");
@@ -44,7 +46,7 @@ public class UserController {
 
         request.getRequestDispatcher("../userindex.jsp").forward(request,response);
     }
-
+    @RequestMapping("/userraceAdd")
     public void userraceAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("USER");

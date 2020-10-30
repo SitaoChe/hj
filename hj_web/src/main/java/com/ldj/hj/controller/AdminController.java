@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller()
@@ -230,9 +232,11 @@ public class AdminController {
     public void adminSsbAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String raceName1 = request.getParameter("racename1");
         String raceName2 = request.getParameter("racename2");
-        String raceName = raceName1+"-"+raceName2;
+        String raceName = raceName1+raceName2;
         String startAge = request.getParameter("startage");
         String endAge = request.getParameter("endage");
+        String raceType = request.getParameter("racetype");
+        String danceType = request.getParameter("dancetype");
         String startTime = request.getParameter("starttime");
         String endTime = request.getParameter("endtime");
         String startRace = request.getParameter("startrace");
@@ -252,6 +256,8 @@ public class AdminController {
         race.setMoney(money);
         race.setLockStatus(lockStatus);
         race.setAdminId(adminId);
+        race.setRaceType(raceType);
+        race.setDanceType(danceType);
 
         raceService.addRace(race);
 
@@ -271,6 +277,8 @@ public class AdminController {
         String raceName = request.getParameter("racename");
         String startAge = request.getParameter("startage");
         String endAge = request.getParameter("endage");
+        String raceType = request.getParameter("racetype");
+        String danceType = request.getParameter("dancetype");
         String startTime = request.getParameter("starttime");
         String endTime = request.getParameter("endtime");
         String startRace = request.getParameter("startrace");
@@ -287,6 +295,10 @@ public class AdminController {
         race.setEndTime(endTime);
         race.setStartRace(startRace);
         race.setMoney(money);
+        race.setLockStatus(lockStatus);
+        race.setAdminId(adminId);
+        race.setRaceType(raceType);
+        race.setDanceType(danceType);
         race.setLockStatus(lockStatus);
         race.setAdminId(adminId);
 
@@ -387,7 +399,6 @@ public class AdminController {
 
 
         String raceProject = request.getParameter("raceProject");
-
         int pageNum = 1;
         int pageSize = 10;
         if (request.getParameter("pageNum") != null){
@@ -400,6 +411,7 @@ public class AdminController {
         List<User> userList = userService.getUserByDeleteAndRace(raceProject);
         PageInfo<User> pageInfo =new PageInfo<User>(userList);
         request.setAttribute("pageInfo",pageInfo);
+        request.setAttribute("raceProjectQuery",raceProject);
         request.getRequestDispatcher("../adminrace.jsp").forward(request,response);
     }
     @RequestMapping("/adminRaceToDf")
@@ -468,20 +480,20 @@ public class AdminController {
         if(CommUtil.isNotNull(request.getParameter("adminId"))){
             adminId = Integer.parseInt(request.getParameter("adminId"));
         }
-        String columnNames[] = {"赛事","比赛时刻","报名时间","报名结束","比赛开始时间","报名费","添加者","锁定状态"};
-        String keys[] = {"raceName","raceTime","startTime","endTime","startRace","money","admin","lockStatus"};
+        String columnNames[] = {"组别名称","特色组","舞种","报名时间","报名结束","比赛开始时间","报名费","添加者"};
+        String keys[] = {"raceName","raceType","danceType","startTime","endTime","startRace","money","admin"};
         List<Race> allRaceByAdmin = raceService.getAllRaceByAdmin(adminId);
         List<Map<String,Object>> listMap = new ArrayList<>();
         for (Race race:allRaceByAdmin){
             Map<String,Object> map = new HashMap<>();
-            map.put("raceName",race.getRaceName());
+            map.put("raceName",race.getRaceName()+"("+race.getStartAge()+"-"+race.getEndAge()+"岁)");
+            map.put("raceType",race.getRaceType());
+            map.put("danceType",race.getDanceType());
             map.put("startTime",race.getStartTime());
             map.put("endTime",race.getEndTime());
-            map.put("startRace",race.getStartRace());
+            map.put("startRace",race.getStartRace());//未完成
             map.put("money",race.getMoney());
-            map.put("lockStatus",race.getLockStatus());
-            map.put("raceTime",null);
-            map.put("admin",null);
+            map.put("admin",race.getAdmin().getAdminAccount());
             listMap.add(map);
         }
 
@@ -553,6 +565,156 @@ public class AdminController {
         }
         return data;
     }
+
+    /**
+     * 数据导出ExcelXsb
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/excelExportXsb", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> excelExportXsb(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        HttpSession session = request.getSession();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Admin admin = (Admin)session.getAttribute("ADMIN");
+        Integer adminId = (Integer) admin.getAdminId();
+        List<User> allUserList = userService.getAllUserByDelete();
+        if(allUserList.size() != 0){
+            Integer countAllUsers = allUserList.size();//总人数
+            Integer countAllGroups = countAllUsers%15 == 0 ?countAllUsers/15:countAllUsers/15 + 1;//总组数,计算选手所在分组
+            Integer countAllBatchs = countAllGroups%8 == 0 ?countAllGroups/8:countAllGroups/8 + 1; //总批数,用来计算时间
+            List<User> allUserListEdited = new ArrayList<User>();
+            Integer groupNo = 1;
+            Integer countNo = 1;
+            if(allUserList.size() >= 20){
+                for(int i = 0; i < allUserList.size(); i ++){
+                    User user = allUserList.get(i);
+                    if( i % 10 == 0 && i >= 10){
+                        groupNo = groupNo + 1;
+                    }
+                    user.setGroupsNum(groupNo);
+                    allUserListEdited.add(user);
+                }
+            }else if (allUserList.size() >=14){
+                int x = allUserList.size()/2;
+                for (int i = 0;i < x;i++){
+                    User user = allUserList.get(i);
+                    user.setGroupsNum(1);
+                    allUserListEdited.add(user);
+                }
+                for (int i = x;i <allUserList.size();i++){
+                    User user = allUserList.get(i);
+                    user.setGroupsNum(2);
+                    allUserListEdited.add(user);
+                }
+            }else {
+                for (int i = 0;i < allUserList.size();i++){
+                    User user = allUserList.get(i);
+                    user.setGroupsNum(1);
+                    allUserListEdited.add(user);
+                }
+            }
+            userService.updateUsersList(allUserListEdited);
+        }
+
+        //根据查询赛事导出excel表
+        Map<String,Object> data = new HashMap<>();
+        String raceProjectQuery = request.getParameter("raceProjectQuery");
+        List<User> userList = userService.getUserByDeleteAndRace(raceProjectQuery);
+        String fileName = CommUtil.formatTime("yyyyMMddHHmmss", new Date()) +".xls";
+
+
+        String columnNames[] = {"背号","男选手","女选手","组别名称","分组","身份证","区域","成绩","状态"};
+        String keys[] = {"userId","boyName","girlName","raceProject","groupsNum","userIdCard","region","grade","checkStatus"};
+        List<Map<String,Object>> listMap = new ArrayList<>();
+        for (User user:userList){
+            Map<String,Object> map = new HashMap<>();
+            map.put("userId",user.getUserId()%100000);
+            map.put("boyName",user.getBoyName());
+            map.put("girlName",user.getGirlName());
+            map.put("raceProject",user.getRaceProject());
+            map.put("groupsNum",user.getGroupsNum());
+            map.put("userIdCard",user.getUserIdCard());
+            map.put("region",user.getRegion());
+            map.put("grade",user.getGrade());
+            map.put("checkStatus",user.getCheckStatus());
+            listMap.add(map);
+        }
+
+
+        try {
+            //创建Workbook
+            Workbook wb = ExcelUtil.createWorkBook(listMap, keys, columnNames);
+            //保存路径
+            String savePath = request.getServletContext().getRealPath("/") + File.separator + fileName;
+            // 创建文件流
+            OutputStream stream = new FileOutputStream(savePath);
+            // 写入数据
+            wb.write(stream);
+            // 关闭文件流
+            stream.close();
+
+            //返回结果
+            data.put("code", 1);
+            String downloadUrl = request.getScheme() + "://"+request.getServerName() + ":" +
+                    request.getServerPort() + "/" + fileName;
+//            data.put("download", "D:\\workSpaceIDEA\\hj\\hj_web\\target\\hj_web\\20201029131928.xls");
+            data.put("download", downloadUrl);
+            File file = new File(savePath);
+            if (file.exists()) {
+                //设置响应类型，这里是下载xls文件
+                response.setContentType("application/xls");
+                //设置Content-Disposition，设置attachment，浏览器会激活文件下载框；filename指定下载后默认保存的文件名
+                //不设置Content-Disposition的话，文件会在浏览器内打卡，比如txt、img文件
+                response.addHeader("Content-Disposition",
+                        "attachment; filename=race.xls");
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                // if using Java 7, use try-with-resources
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (IOException ex) {
+                    // do something,
+                    // probably forward to an Error page
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+            }
+            data.put("message", "文件流输出成功");
+//            System.out.println("\n数据导出成功，下载路径：" + downloadUrl);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            data.put("code", -1);
+            data.put("message", "下载出错");
+            return data;
+        }
+        return data;
+    }
+
+
+
     /**
      * Excel数据导入
      * @param request
@@ -564,7 +726,7 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> importExcel(HttpServletRequest request,HttpServletResponse response, String filePro){
         Map<String, Object> map = new HashMap<>();
-        String keys[] = {"boyName","girlName","userIdCard","raceProject","region","userId","grade","checkStatus"};
+        String keys[] = {"userId","boyName","girlName","raceProject","userIdCard","region","grade","checkStatus"};
         try {
             List<Map<String,String>> listData = ExcelUtil.getExcelData(request, "file",keys);
             if(listData.size() == 0){
@@ -573,18 +735,19 @@ public class AdminController {
                 return map;
             }
             for (Map<String, String> dataMap : listData) {
-                User usert = new User();
-                usert.setBoyName(dataMap.get(keys[0]));
-                usert.setGirlName(dataMap.get(keys[1]));
-                usert.setUserIdCard(dataMap.get(keys[2]));
-                usert.setRaceProject(dataMap.get(keys[3]));
-                usert.setRegion(dataMap.get(keys[4]));
-                usert.setUserId(Integer.parseInt(dataMap.get(keys[5])));
-                usert.setGrade(dataMap.get(keys[6]));
-                usert.setCheckStatus(dataMap.get(keys[7]));
-                userService.addUser(usert);
-//                System.out.println(keys[0] + ":" + dataMap.get(keys[0]));
-//                System.out.println(keys[1] + ":" + dataMap.get(keys[1]));
+                    User usert = new User();
+                    usert.setUserIdCard(dataMap.get(keys[2]));
+                    usert.setRaceProject(dataMap.get(keys[3]));
+                    User user = userService.getUserByUserIdCardAndRaceProject(usert);
+//                user.setUserId(Integer.parseInt(dataMap.get(keys[0])));
+                    user.setBoyName(dataMap.get(keys[1]));
+                    user.setGirlName(dataMap.get(keys[2]));
+                    user.setRaceProject(dataMap.get(keys[3]));
+                    user.setUserIdCard(dataMap.get(keys[4]));
+                    user.setRegion(dataMap.get(keys[5]));
+                    user.setGrade(dataMap.get(keys[6]));
+                    user.setCheckStatus(dataMap.get(keys[7]));
+                    userService.editUser(user);
             }
             map.put("listData", listData);
             map.put("code", 1);

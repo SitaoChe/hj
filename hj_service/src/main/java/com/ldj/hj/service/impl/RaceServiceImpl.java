@@ -28,7 +28,7 @@ public class RaceServiceImpl implements RaceService {
 
     public void removeRace(Integer raceId) {
         Race race = raceDao.selectByRaceId(raceId);
-        String raceAllName = race.getRaceName() + "-(" + race.getStartAge() +"-" + race.getEndAge()+"岁)";
+        String raceAllName = race.getRaceName() + "(" + race.getStartAge() +"-" + race.getEndAge()+"岁)";
         List<User> userList= userDao.selectUserByRaceProject(raceAllName);
         for (User user : userList) {
             userDao.updataDelete(user.getUserId());

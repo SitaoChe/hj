@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -30,7 +29,7 @@
     <link rel="stylesheet" href="${baseurl}/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Fontastic Custom icon font-->
     <link rel="stylesheet" href="${baseurl}/css/fontastic.css">
-    <link rel="stylesheet" href="${baseurl}/css/webuploader.css">
+<%--    <link rel="stylesheet" href="${baseurl}/css/webuploader.css">--%>
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
@@ -115,17 +114,20 @@
                             <span><strong>选手比赛表</strong></span>
                             <!--form -->
                             <form action="selectRace.do" method="post" name="selectRace">
+
                                 <div>
                                     <span>比赛项目</span>
                                     <select name="raceProject" >
                                         <option value="">请选择比赛项目</option>>
                                         <c:forEach items="${RACELIST}" var="race">
-                                            <option value="${race.raceName}-(${race.startAge}-${race.endAge}岁)">${race.raceName}-(${race.startAge}-${race.endAge}岁)</option>
+                                            <option value="${race.raceName}(${race.startAge}-${race.endAge}岁)">${race.raceName}(${race.startAge}-${race.endAge}岁)</option>
                                         </c:forEach>
                                     </select>
                                     <a href="javascript:selectRace.submit();" class="btn btn-outline-success btn-sm">查询</a>
+                                    <a href="#" id="J_download" class="btn btn-outline-success btn-sm">选手表excel表导出</a>
                                     <a id="J_upload" href="#" class="btn btn-outline-success btn-sm">文件上传</a>
                                 </div>
+
                             </form>
                             <!--form -->
                         </div>
@@ -148,6 +150,7 @@
                                     </thead>
 
                                     <tbody>
+                                    <input id="raceProjectQuery" type="hidden" name="raceProjectQuery" value="${raceProjectQuery}">
                                     <c:forEach items="${pageInfo.list}" var="user" varStatus="v">
                                         <tr>
                                             <td scope="row">${v.index + 1}</td>
@@ -225,12 +228,47 @@
 <script type="text/javascript" src="${baseurl}/js/webuploader.html5only.min.js"></script>
 <script>
 
+    var postDownLoadFile = function (options) {
+        var config = $.extend(true, { method: 'post' }, options);
+        var $iframe = $('<iframe id="down-file-iframe" />');
+        var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+        $form.attr('action', config.url);
+        for (var key in config.data) {
+            $form.append('<input type="hidden" name="' + key + '" value="' + config.data[key] + '" />');
+        }
+        $iframe.append($form);
+        $(document.body).append($iframe);
+        $form[0].submit();
+        $iframe.remove();
+    }
+
+    var projectName = $('#raceProjectQuery').val();
+        console.log("projectName:" + projectName)
+    //导出
+    $("#J_download").on('click',
+        function() {
+            var param={
+                    'raceProjectQuery':projectName
+            };
+            postDownLoadFile({
+                url:'excelExportXsb.do',
+                data:param,
+                method:'post'
+            });
+
+        });
+
+
+
+
+
     //上传文件
     var uploader = WebUploader.create({
         auto: true,
         server: 'importExcel.do',
         pick: '#J_upload',
         resize: false,
+        fileSingleSizeLimit: 20480000,
         accept: {
             mimeTypes: '.xlsx,.xls'
         }
@@ -250,7 +288,7 @@
         alert('上传出错');
     });
     uploader.on( 'uploadComplete', function( file ) {
-        console.log("file : "+file)
+
     });
 
     setTimeout(function(){

@@ -123,7 +123,9 @@
                                     <thead>
                                     <tr>
                                         <th>选择</th>
-                                        <th>赛事</th>
+                                        <th>组别名称</th>
+                                        <th>特色组</th>
+                                        <th>舞种</th>
                                         <th>报名时间</th>
                                         <th>报名结束</th>
                                         <th>比赛开始时间</th>
@@ -138,7 +140,9 @@
                                     <c:forEach items="${RACELIST}" var="race">
                                     <tr>
                                         <td scope="row"><input type="checkbox"></td>
-                                        <td>${race.raceName}-(${race.startAge}-${race.endAge}岁)</td>
+                                        <td>${race.raceName}(${race.startAge}-${race.endAge}岁)</td>
+                                        <td>${race.raceType}</td>
+                                        <td>${race.danceType}</td>
                                         <td>${race.startTime}</td>
                                         <td>${race.endTime}</td>
                                         <td>${race.startRace}</td>
